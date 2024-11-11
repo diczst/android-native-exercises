@@ -20,6 +20,10 @@ import com.neonusa.alarmmanager.databinding.ActivityMainBinding
     1.SET ALARM
     2.CANCEL
     3.RESCHEDULE (SET ALARM ULANG)
+
+    // PENTING LAGI
+    DELAY INEXACT ALARM INI BISA SAMPAI >3 MENIT
+    STUDI KASUS YANG PERNAH DILAKUKAN 00.28, BARU KETRIGGER DI 00.31
  */
 
 
@@ -59,8 +63,12 @@ class MainActivity : AppCompatActivity() {
             val message = if(binding.edtMessage.text.isNullOrEmpty()) "Default message" else binding.edtMessage.text
             alarmReceiver.setRepeatingAlarm(
                 this, AlarmReceiver.TYPE_REPEATING,
-                time, "message"
+                time, message.toString()
             )
+        }
+
+        binding.btnCancelAlarm.setOnClickListener {
+            alarmReceiver.cancelAlarm(this)
         }
 
     }

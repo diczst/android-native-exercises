@@ -21,8 +21,6 @@ import java.util.Locale
 class AlarmReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
-        // This method is called when the BroadcastReceiver is receiving an Intent broadcast.
-        val type = intent.getStringExtra(EXTRA_TYPE)
         val message = intent.getStringExtra(EXTRA_MESSAGE)
 
         val title = TYPE_REPEATING
@@ -129,9 +127,26 @@ class AlarmReceiver : BroadcastReceiver() {
         }
 
         val notification = builder.build()
-
         notificationManagerCompat.notify(notifId, notification)
 
+    }
+
+    fun cancelAlarm(context: Context) {
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(context, AlarmReceiver::class.java)
+        val requestCode = ID_REPEATING
+        val pendingIntent = PendingIntent.getBroadcast(
+            context,
+            requestCode,
+            intent,
+            PendingIntent.FLAG_NO_CREATE or PendingIntent.FLAG_IMMUTABLE
+        )
+
+        if (pendingIntent != null) {
+            pendingIntent.cancel()
+            alarmManager.cancel(pendingIntent)
+            Toast.makeText(context, "Repeating alarm dibatalkan", Toast.LENGTH_SHORT).show()
+        }
     }
 
     companion object {
