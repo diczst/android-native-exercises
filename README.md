@@ -3,11 +3,16 @@ Core areas adalah bagian-bagian utama yang mendukung fungsionalitas aplikasi. Ka
 https://developer.android.com/develop#core-areas
 
 ## BACKGROUND WORK
-Background task adalah tasks di Android yang berjalan ketika aplikasi tidak terlihat di layar. Ada tiga jenis background work yaitu :
-### Services
-### Background Task
-### Alarm
+Background work adalah kumpulan task di Android yang berjalan ketika aplikasi tidak terlihat di layar. Ada tiga jenis background work yaitu :
 
+### 1. Services
+komponen aplikasi yang dapat menjalankan operasi yang berjalan lama di latar belakang. Layanan ini dapat terus berjalan, bahkan saat pengguna sedang menggunakan aplikasi lain.
+
+### 2. Background Task
+Background task di Android adalah tugas yang dijalankan di latar belakang, yaitu ketika aplikasi tidak terlihat oleh pengguna dan tidak menjalankan layanan latar depan.
+
+### 3. Alarm
+Fitur yang memungkinkan user untuk melakukan aksi pada waktu tertentu saat aplikasi sedang aktif maupun tidak aktif.
 
 Sebagai penuntun arah dalam belajar, kamu bisa melihat roadmap ini :
 https://roadmap.sh/android
