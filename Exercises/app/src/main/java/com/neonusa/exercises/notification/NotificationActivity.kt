@@ -13,6 +13,9 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
+import com.neonusa.exercises.Constants.NOTIFICATION_CHANNEL_NAME
+import com.neonusa.exercises.Constants.NOTIFICATION_CHANNEl_ID
+import com.neonusa.exercises.MainActivity
 import com.neonusa.exercises.R
 import com.neonusa.exercises.databinding.ActivityNotificationBinding
 
@@ -49,6 +52,11 @@ class NotificationActivity : AppCompatActivity() {
         binding.btnNotification2.setOnClickListener {
             sendBigTextNotification("Notifikasi 2 Channel 1", "Ini notifikasi kedua di channel 1")
         }
+
+        // NOTIFIKASI 2 CHANNEL 1
+        binding.btnNotification3.setOnClickListener {
+            sendBigTextNotification1("Notifikasi 3 Channel 1", "Ini notifikasi ketiga di channel 1")
+        }
     }
 
 
@@ -62,7 +70,7 @@ class NotificationActivity : AppCompatActivity() {
         )
 
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        val builder = NotificationCompat.Builder(this, CHANNEL_ID)
+        val builder = NotificationCompat.Builder(this, NOTIFICATION_CHANNEl_ID)
             .setContentTitle(title)
             .setSmallIcon(R.drawable.baseline_notifications_24)
             .setContentText(message)
@@ -74,15 +82,15 @@ class NotificationActivity : AppCompatActivity() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
-                CHANNEL_ID,
-                CHANNEL_NAME,
+                NOTIFICATION_CHANNEl_ID,
+                NOTIFICATION_CHANNEL_NAME,
                 NotificationManager.IMPORTANCE_DEFAULT
             )
-            builder.setChannelId(CHANNEL_ID)
+            builder.setChannelId(NOTIFICATION_CHANNEl_ID)
             notificationManager.createNotificationChannel(channel)
         }
         val notification = builder.build()
-        notificationManager.notify(NOTIFICATION_ID, notification)
+        notificationManager.notify(1, notification)
     }
 
     private fun sendBigTextNotification(title: String, message: String) {
@@ -91,7 +99,7 @@ class NotificationActivity : AppCompatActivity() {
             .bigText(message)
             .setBigContentTitle(title)
 
-        val builder = NotificationCompat.Builder(this, CHANNEL_ID)
+        val builder = NotificationCompat.Builder(this, NOTIFICATION_CHANNEl_ID)
             .setContentTitle(title)
             .setSmallIcon(R.drawable.baseline_notifications_24)
             .setContentText(message)
@@ -101,23 +109,49 @@ class NotificationActivity : AppCompatActivity() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
-                CHANNEL_ID,
-                CHANNEL_NAME,
+                NOTIFICATION_CHANNEl_ID,
+                NOTIFICATION_CHANNEL_NAME,
                 NotificationManager.IMPORTANCE_HIGH
             )
-            builder.setChannelId(CHANNEL_ID)
+            builder.setChannelId(NOTIFICATION_CHANNEl_ID)
             notificationManager.createNotificationChannel(channel)
         }
 
         val notification = builder.build()
-        notificationManager.notify(NOTIFICATION_ID + 1, notification)  // Use a different ID for each notification
+        notificationManager.notify(2, notification)  // Use a different ID for each notification
     }
 
+    private fun sendBigTextNotification1(title: String, message: String) {
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val bigTextStyle = NotificationCompat.BigTextStyle()
+            .bigText(message)
+            .setBigContentTitle(title)
 
+        // Intent untuk membuka aplikasi saat notifikasi diklik
+        val intent = Intent(this, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK // Hanya buka jika belum terbuka
+        val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
 
-    companion object {
-        private const val NOTIFICATION_ID = 1
-        private const val CHANNEL_ID = "channel_01"
-        private const val CHANNEL_NAME = "dicoding channel"
+        val builder = NotificationCompat.Builder(this, NOTIFICATION_CHANNEl_ID)
+            .setContentTitle(title)
+            .setSmallIcon(R.drawable.baseline_notifications_24)
+            .setContentText(message)
+            .setStyle(bigTextStyle)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setAutoCancel(true)
+            .setContentIntent(pendingIntent)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                NOTIFICATION_CHANNEl_ID,
+                NOTIFICATION_CHANNEL_NAME,
+                NotificationManager.IMPORTANCE_HIGH
+            )
+            builder.setChannelId(NOTIFICATION_CHANNEl_ID)
+            notificationManager.createNotificationChannel(channel)
+        }
+
+        val notification = builder.build()
+        notificationManager.notify(3, notification)  // Use a different ID for each notification
     }
 }

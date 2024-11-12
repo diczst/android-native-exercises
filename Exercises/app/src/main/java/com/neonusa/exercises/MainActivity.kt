@@ -13,7 +13,7 @@ class MainActivity : AppCompatActivity() {
     val items = listOf(
         Exercise(1,"Service",0),
         Exercise(2,"Notification",1),
-        Exercise(3,"Alarm",2),
+        Exercise(3,"Alarm",0),
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
