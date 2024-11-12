@@ -38,6 +38,9 @@ import com.neonusa.exercises.databinding.ActivityNotificationBinding
 
 // vibration pattern = delay,duration,delay,duration,delay.dst...
 
+//todo : mungkin perlu membuat halaman pengaturan yang bisa mengatur
+// nada dering dan getar
+
 class NotificationActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNotificationBinding
     private lateinit var notificationManager: NotificationManager
