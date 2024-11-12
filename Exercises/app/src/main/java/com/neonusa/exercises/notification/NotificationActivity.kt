@@ -59,7 +59,6 @@ class NotificationActivity : AppCompatActivity() {
         setContentView(binding.root)
         notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        // android 13 keatas perlu minta izin
         if (Build.VERSION.SDK_INT >= 33) {
             requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
         }
