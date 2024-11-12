@@ -6,18 +6,40 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
+import androidx.core.content.getSystemService
 import com.neonusa.exercises.Constants.NOTIFICATION_CHANNEL_NAME
 import com.neonusa.exercises.Constants.NOTIFICATION_CHANNEl_ID
 import com.neonusa.exercises.MainActivity
 import com.neonusa.exercises.R
 import com.neonusa.exercises.databinding.ActivityNotificationBinding
+
+
+/*
+    CATATAN NOTIFIKASI
+    SYARAT UNTUK MENGAKTIFKAN NADA DERING + GETAR
+        1. user harus mengizinkan notifikasi
+        2. di pengaturan notifikasi, user harus mengizinkan nada dering + getar
+
+    SATU CHANNEL BISA DIGUNAKAN UNTUK BANYAK NOTIFIKASI
+    SEBUAH CHANNEL BISA PUNYA SETTING TERTENTU CONTOH :
+    1. channel 1 : ringtone + getar
+    2. channel 2 : getar saja tanpa ringtone
+    bisa dibilang channel membantuk untuk mengkategorisasikan notifikasi
+*/
+
+
+
+// vibration pattern = delay,duration,delay,duration,delay.dst...
 
 class NotificationActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNotificationBinding
@@ -56,6 +78,26 @@ class NotificationActivity : AppCompatActivity() {
         // NOTIFIKASI 2 CHANNEL 1
         binding.btnNotification3.setOnClickListener {
             sendBigTextNotification1("Notifikasi 3 Channel 1", "Ini notifikasi ketiga di channel 1")
+        }
+
+        // Get the Vibrator service
+        val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        val alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+        val ringtone = RingtoneManager.getRingtone(this, alarmSound)
+        binding.btnVibration.setOnClickListener {
+            // Check if the device has a vibrator
+            if (vibrator.hasVibrator()) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    // first argument is delay duration, second is vibration duration
+                    vibrator.vibrate(VibrationEffect.createWaveform(longArrayOf(0,5000), -1))
+                } else {
+                    vibrator.vibrate(500)
+                }
+            }
+        }
+
+        binding.btnRingtone.setOnClickListener {
+            ringtone.play()
         }
     }
 
@@ -131,6 +173,7 @@ class NotificationActivity : AppCompatActivity() {
         val intent = Intent(this, MainActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK // Hanya buka jika belum terbuka
         val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+        val alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
 
         val builder = NotificationCompat.Builder(this, NOTIFICATION_CHANNEl_ID)
             .setContentTitle(title)
@@ -139,7 +182,9 @@ class NotificationActivity : AppCompatActivity() {
             .setStyle(bigTextStyle)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)
+            .setVibrate(longArrayOf(0,1000))
             .setContentIntent(pendingIntent)
+            .setSound(alarmSound)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
@@ -147,6 +192,10 @@ class NotificationActivity : AppCompatActivity() {
                 NOTIFICATION_CHANNEL_NAME,
                 NotificationManager.IMPORTANCE_HIGH
             )
+
+            channel.enableVibration(true)
+            channel.vibrationPattern = longArrayOf(0, 1000)
+
             builder.setChannelId(NOTIFICATION_CHANNEl_ID)
             notificationManager.createNotificationChannel(channel)
         }

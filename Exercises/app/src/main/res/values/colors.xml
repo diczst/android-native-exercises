@@ -4,6 +4,7 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="success">#59FB3D</color>
+    <color name="success_dark">#31C118</color>
     <color name="danger">#FB3D3D</color>
     <color name="warning">#FF9800</color>
 </resources>
