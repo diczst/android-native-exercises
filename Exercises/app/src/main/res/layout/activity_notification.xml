@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    tools:context=".NotificationActivity">
+    tools:context=".notification.NotificationActivity">
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_notification"

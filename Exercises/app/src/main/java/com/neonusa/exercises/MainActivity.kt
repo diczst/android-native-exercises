@@ -2,12 +2,10 @@ package com.neonusa.exercises
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import com.neonusa.exercises.alarm.AlarmActivity
 import com.neonusa.exercises.databinding.ActivityMainBinding
+import com.neonusa.exercises.notification.NotificationActivity
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -25,7 +23,14 @@ class MainActivity : AppCompatActivity() {
 
         binding.rvExercises.addItemDecoration(ExerciseGridDecoration(2, 16, true))
         binding.rvExercises.adapter = ExerciseAdapter(
-            items,{
+            items = items,
+            onClick = {
+                val intent = when(it.id){
+                    2 -> Intent(this, NotificationActivity::class.java)
+                    3 -> Intent(this, AlarmActivity::class.java)
+                    else -> Intent(this, NotificationActivity::class.java)
+                }
+                startActivity(intent)
             }
         )
     }

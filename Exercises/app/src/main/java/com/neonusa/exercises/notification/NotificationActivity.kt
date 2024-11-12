@@ -1,4 +1,4 @@
-package com.neonusa.exercises
+package com.neonusa.exercises.notification
 
 import android.Manifest
 import android.app.NotificationChannel
@@ -6,7 +6,6 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -14,6 +13,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
+import com.neonusa.exercises.R
 import com.neonusa.exercises.databinding.ActivityNotificationBinding
 
 class NotificationActivity : AppCompatActivity() {
