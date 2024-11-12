@@ -125,7 +125,6 @@ class NotificationActivity : AppCompatActivity() {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) PendingIntent.FLAG_IMMUTABLE else 0
         )
 
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val builder = NotificationCompat.Builder(this, NOTIFICATION_CHANNEl_ID)
             .setContentTitle(title)
             .setSmallIcon(R.drawable.baseline_notifications_24)
@@ -141,7 +140,6 @@ class NotificationActivity : AppCompatActivity() {
     }
 
     private fun sendBigTextNotification(title: String, message: String) {
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val builder = NotificationCompat.Builder(this, NOTIFICATION_CHANNEl_ID)
             .setContentTitle(title)
             .setSmallIcon(R.drawable.baseline_notifications_24)
