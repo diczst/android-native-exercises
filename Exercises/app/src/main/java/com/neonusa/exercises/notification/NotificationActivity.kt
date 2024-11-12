@@ -41,6 +41,7 @@ import com.neonusa.exercises.databinding.ActivityNotificationBinding
 
 class NotificationActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNotificationBinding
+    private lateinit var notificationManager: NotificationManager
 
     private val requestPermissionLauncher =
         registerForActivityResult(
@@ -57,11 +58,25 @@ class NotificationActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityNotificationBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         // android 13 keatas perlu minta izin
         if (Build.VERSION.SDK_INT >= 33) {
             requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
         }
+
+        // NOTIFICATION CHANNEL
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                NOTIFICATION_CHANNEl_ID,
+                NOTIFICATION_CHANNEL_NAME,
+                NotificationManager.IMPORTANCE_HIGH
+            )
+            channel.enableVibration(true)
+            channel.vibrationPattern = longArrayOf(0, 1000)
+            notificationManager.createNotificationChannel(channel)
+        }
+        //===============================================================================================
 
         // NOTIFIKASI 1 CHANNEL 1
         binding.btnNotification.setOnClickListener {
@@ -162,42 +177,19 @@ class NotificationActivity : AppCompatActivity() {
     }
 
     private fun sendBigTextNotification1(title: String, message: String) {
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        val bigTextStyle = NotificationCompat.BigTextStyle()
-            .bigText(message)
-            .setBigContentTitle(title)
-
         // Intent untuk membuka aplikasi saat notifikasi diklik
         val intent = Intent(this, MainActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK // Hanya buka jika belum terbuka
         val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
-        val alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
 
         val builder = NotificationCompat.Builder(this, NOTIFICATION_CHANNEl_ID)
             .setContentTitle(title)
             .setSmallIcon(R.drawable.baseline_notifications_24)
             .setContentText(message)
-            .setStyle(bigTextStyle)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)
-            .setVibrate(longArrayOf(0,1000))
             .setContentIntent(pendingIntent)
-            .setSound(alarmSound)
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                NOTIFICATION_CHANNEl_ID,
-                NOTIFICATION_CHANNEL_NAME,
-                NotificationManager.IMPORTANCE_HIGH
-            )
-
-            channel.enableVibration(true)
-            channel.vibrationPattern = longArrayOf(0, 1000)
-
-            builder.setChannelId(NOTIFICATION_CHANNEl_ID)
-            notificationManager.createNotificationChannel(channel)
-        }
-
+        builder.setChannelId(NOTIFICATION_CHANNEl_ID)
         val notification = builder.build()
         notificationManager.notify(3, notification)  // Use a different ID for each notification
     }
