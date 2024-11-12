@@ -23,7 +23,6 @@ import com.neonusa.exercises.MainActivity
 import com.neonusa.exercises.R
 import com.neonusa.exercises.databinding.ActivityNotificationBinding
 
-
 /*
     CATATAN NOTIFIKASI
     SYARAT UNTUK MENGAKTIFKAN NADA DERING + GETAR
@@ -134,44 +133,21 @@ class NotificationActivity : AppCompatActivity() {
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
 
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                NOTIFICATION_CHANNEl_ID,
-                NOTIFICATION_CHANNEL_NAME,
-                NotificationManager.IMPORTANCE_DEFAULT
-            )
-            builder.setChannelId(NOTIFICATION_CHANNEl_ID)
-            notificationManager.createNotificationChannel(channel)
-        }
+        builder.setChannelId(NOTIFICATION_CHANNEl_ID)
         val notification = builder.build()
         notificationManager.notify(1, notification)
     }
 
     private fun sendBigTextNotification(title: String, message: String) {
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        val bigTextStyle = NotificationCompat.BigTextStyle()
-            .bigText(message)
-            .setBigContentTitle(title)
-
         val builder = NotificationCompat.Builder(this, NOTIFICATION_CHANNEl_ID)
             .setContentTitle(title)
             .setSmallIcon(R.drawable.baseline_notifications_24)
             .setContentText(message)
-            .setStyle(bigTextStyle)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                NOTIFICATION_CHANNEl_ID,
-                NOTIFICATION_CHANNEL_NAME,
-                NotificationManager.IMPORTANCE_HIGH
-            )
-            builder.setChannelId(NOTIFICATION_CHANNEl_ID)
-            notificationManager.createNotificationChannel(channel)
-        }
-
+        builder.setChannelId(NOTIFICATION_CHANNEl_ID)
         val notification = builder.build()
         notificationManager.notify(2, notification)  // Use a different ID for each notification
     }
