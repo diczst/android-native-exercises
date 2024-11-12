@@ -37,8 +37,6 @@ import com.neonusa.exercises.databinding.ActivityNotificationBinding
     bisa dibilang channel membantuk untuk mengkategorisasikan notifikasi
 */
 
-
-
 // vibration pattern = delay,duration,delay,duration,delay.dst...
 
 class NotificationActivity : AppCompatActivity() {
