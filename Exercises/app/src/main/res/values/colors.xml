@@ -2,4 +2,8 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="success">#59FB3D</color>
+    <color name="danger">#FB3D3D</color>
+    <color name="warning">#FF9800</color>
 </resources>
